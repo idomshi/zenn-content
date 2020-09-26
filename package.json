@@ -1,0 +1,23 @@
+{
+  "name": "20200926_zenn-content",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx zenn preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/idomshi/zenn-content.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/idomshi/zenn-content/issues"
+  },
+  "homepage": "https://github.com/idomshi/zenn-content#readme",
+  "dependencies": {
+    "zenn-cli": "^0.1.35"
+  }
+}
