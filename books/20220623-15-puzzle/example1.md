@@ -21,7 +21,7 @@ HTMLのテンプレートをダウンロードしてきて自分で分かると�
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>template</title>
-    <script src="https://unpkg.com/vue@3.2.37"></script>
+    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
     <style>
 
       /* ↑ここにCSSを書く。 */
@@ -62,7 +62,7 @@ HTMLのテンプレートをダウンロードしてきて自分で分かると�
 ```diff html
 @@ -6,12 +6,20 @@
      <title>template</title>
-     <script src="https://unpkg.com/vue@3.2.37"></script>
+     <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
      <style>
 +        .piece {
 +            width: 720px;
@@ -90,7 +90,7 @@ HTMLのテンプレートをダウンロードしてきて自分で分かると�
 
 ```diff html
 @@ -7,8 +7,8 @@
-     <script src="https://unpkg.com/vue@3.2.37"></script>
+     <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
      <style>
          .piece {
 -            width: 720px;
@@ -179,7 +179,7 @@ HTMLのテンプレートをダウンロードしてきて自分で分かると�
 ```diff html
 @@ -6,6 +6,15 @@
      <title>template</title>
-     <script src="https://unpkg.com/vue@3.2.37"></script>
+     <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
      <style>
 +        .piece-container {
 +            width: 720px;
