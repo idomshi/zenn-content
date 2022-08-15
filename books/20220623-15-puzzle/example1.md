@@ -15,14 +15,13 @@ title: "15パズルを作ろう"
 [Vue.js single-file-HTML template](https://gist.github.com/idomshi/883cc00c9f3f8a0083e51e0cb96ae2d0)
 
 迷ったらデスクトップに「15パズル」というフォルダを作ってその中に入れればOK。
-同じ場所に画像ファイル（750px×750pxのjpgファイル）も入れてください。
+同じ場所に画像ファイル（720px×720pxのjpgファイル）も入れてください。
 
 ```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>template</title>
     <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
     <style>
@@ -296,8 +295,6 @@ title: "15パズルを作ろう"
 右にスライドする処理と左ににスライドする処理は1つの関数 ``slideX`` にまとめられます。
 
 ```diff html
---- D:/repository/15-puzzle/006.html	Sat Jul  9 21:16:45 2022
-+++ D:/repository/15-puzzle/007.html	Sat Jul  9 21:26:17 2022
 @@ -56,7 +56,7 @@
  <body>
      <div id="app">
