@@ -280,7 +280,8 @@ title: "さめがめを作ろう"
 
 ## 7 セルを削除する処理を作る
 
-削除する処理はもっと丁寧に工程を分割して説明できると良いのですが、めんどくさいという気持ちもあります。
+cellsの要素を削除すると該当するセルを消せます。この処理を ``remove`` 関数として追記します。
+また、セルのクリックで ``remove`` が呼び出されるようにHTMLに ``@click`` を追記します。
 
 ```diff html
 @@ -40,7 +40,7 @@
@@ -292,61 +293,13 @@ title: "さめがめを作ろう"
        </div>
      </div>
  
-@@ -84,12 +84,67 @@
+@@ -84,12 +84,19 @@
            return result
          }
  
-+        /**
-+         * 再帰的にcolorと同じ色の隣接セルを探索してreservedにリストアップする。
-+         * @type {(
-+         *   color: string,
-+         *   i: number,
-+         *   j: number,
-+         *   reserved: [number, number][],
-+         *   checked: [number, number][]
-+         * ) => [[number, number][], [number, number][]]}
-+         */
-+        const search = (color, i, j, reserved, checked) => {
-+          // そもそもセルがあるかどうか。
-+          if (i < 0 || i >= cells.value.length) return [reserved, checked]
-+          if (j < 0 || j >= cells.value[i].length) return [reserved, checked]
-+
-+          // 足を踏み入れたセルのアドレスは必ずcheckedに記録する。
-+          checked.push([i, j])
-+
-+          // 違う色だったらそのままreservedを返す。
-+          if (cells.value[i][j] !== color) return [reserved, checked]
-+        
-+          // 同じ色だったらreservedに自身を追加して周囲の4セルをチェックする。
-+          reserved.push([i, j])
-+          if (!checked.some((v) => v[0] === i - 1 && v[1] === j)) {
-+            [reserved, checked] = search(color, i - 1, j, reserved, checked)
-+          }
-+          if (!checked.some((v) => v[0] === i + 1 && v[1] === j)) {
-+            [reserved, checked] = search(color, i + 1, j, reserved, checked)
-+          }
-+          if (!checked.some((v) => v[0] === i && v[1] === j - 1)) {
-+            [reserved, checked] = search(color, i, j - 1, reserved, checked)
-+          }
-+          if (!checked.some((v) => v[0] === i && v[1] === j + 1)) {
-+            [reserved, checked] = search(color, i, j + 1, reserved, checked)
-+          }
-+          return [reserved, checked]
-+        }
-+
 +        // クリックされたセルとそれに隣接する同色セルを消す。
 +        const remove = (i, j) => {
-+          const color = cells.value[i][j]
-+
-+          const [reserved] = search(color, i, j, [], [])
-+          // 同じ色のセルがくっついていなかったら何もしない。
-+          if (reserved.length < 2) return
-+
-+          // 消す順番を間違えると違うの消しちゃうからソートしちゃう。
-+          reserved.sort((a, b) => b[1] - a[1])
-+
-+          // で、上の方にあるやつから順番に消しますよと。
-+          reserved.forEach(([i, j]) => cells.value[i].splice(j, 1))
++          cells.value[i].splice(j, 1)
 +          cells.value = cells.value.filter((v) => v.length > 0)
 +        }
 +
@@ -361,3 +314,103 @@ title: "さめがめを作ろう"
  
          // ↑ここにJavaScriptを書く。
 ```
+
+## 8 同じ色の隣接セルを探索する準備
+
+同じ色のセルを再帰的に探索する ``search`` 関数を追加します。ただしここではまだ探索処理はせず、起点となるセルだけを返します。
+また、 ``search`` 関数を ``remove`` 関数から呼び出すように修正します。
+
+```diff html
+@@ -84,9 +84,31 @@
+           return result
+         }
+ 
++        /**
++         * 再帰的にcolorと同じ色の隣接セルを探索してreservedにリストアップする。
++         * @type {(
++         *   color: string,
++         *   i: number,
++         *   j: number,
++         *   reserved: [number, number][],
++         *   checked: [number, number][]
++         * ) => [[number, number][], [number, number][]]}
++         */
++        const search = (color, i, j, reserved, checked) => {
++          reserved.push([i, j])
++          return [reserved, checked]
++        }
++
+         // クリックされたセルとそれに隣接する同色セルを消す。
+         const remove = (i, j) => {
+-          cells.value[i].splice(j, 1)
++          const color = cells.value[i][j]
++          const [reserved] = search(color, i, j, [], [])
++
++          // 消す順番を間違えると違うの消しちゃうからソートしちゃう。
++          reserved.sort((a, b) => b[1] - a[1])
++
++          // で、上の方にあるやつから順番に消しますよと。
++          reserved.forEach(([i, j]) => cells.value[i].splice(j, 1))
+           cells.value = cells.value.filter((v) => v.length > 0)
+         }
+ 
+```
+
+## 9 再帰的に探索させる
+
+``search`` 関数に探索処理を実装します。
+処理の中で再帰的に ``search`` 関数を呼び出すようにし、隣接する同じ色のセルが見つかったら ``reserved`` に追加していきます。
+
+```diff html
+@@ -95,7 +95,30 @@
+          * ) => [[number, number][], [number, number][]]}
+          */
+         const search = (color, i, j, reserved, checked) => {
++          // そもそもセルがあるかどうか。
++          if (i < 0 || i >= cells.value.length) return [reserved, checked]
++          if (j < 0 || j >= cells.value[i].length) return [reserved, checked]
++
++          // 足を踏み入れたセルのアドレスは必ずcheckedに記録する。
++          checked.push([i, j])
++
++          // 違う色だったらそのままreservedを返す。
++          if (cells.value[i][j] !== color) return [reserved, checked]
++        
++          // 同じ色だったらreservedに自身を追加して周囲の4セルをチェックする。
+           reserved.push([i, j])
++          if (!checked.some((v) => v[0] === i - 1 && v[1] === j)) {
++            [reserved, checked] = search(color, i - 1, j, reserved, checked)
++          }
++          if (!checked.some((v) => v[0] === i + 1 && v[1] === j)) {
++            [reserved, checked] = search(color, i + 1, j, reserved, checked)
++          }
++          if (!checked.some((v) => v[0] === i && v[1] === j - 1)) {
++            [reserved, checked] = search(color, i, j - 1, reserved, checked)
++          }
++          if (!checked.some((v) => v[0] === i && v[1] === j + 1)) {
++            [reserved, checked] = search(color, i, j + 1, reserved, checked)
++          }
+           return [reserved, checked]
+         }
+ 
+```
+
+## 10 独立したセルは消さないようにする
+
+探索した結果、消すべきセルは ``reserved`` にリストアップされています。
+リストアップされたセルが2つ以上だった場合のみ削除処理が実行されるように ``remove`` 関数を修正します。
+
+```diff html
+@@ -126,6 +126,9 @@
+         const remove = (i, j) => {
+           const color = cells.value[i][j]
+           const [reserved] = search(color, i, j, [], [])
++          
++          // 同じ色のセルがくっついていなかったら何もしない。
++          if (reserved.length < 2) return
+ 
+           // 消す順番を間違えると違うの消しちゃうからソートしちゃう。
+           reserved.sort((a, b) => b[1] - a[1])
+```
+
+これで完成です。色の数・行数・列数を変えるとゲームの難易度が調整できます。カスタマイズしてみてください。
