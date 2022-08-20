@@ -1,0 +1,8 @@
+title: "15パズルを作ろう"
+summary: "超初心者向けプログラミングハンズオン資料　HTMLのテンプレートファイルに追記していく形で15パズルを作ります。"
+topics: ["vue"]
+published: false
+price: 0
+chapters:
+  - example1
+  - example2
