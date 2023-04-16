@@ -3,7 +3,7 @@ title: "ジト目のロゴが可愛いJitoでxeyesを作ってみた"
 emoji: "👀"
 type: "tech"
 topics: ["jito", "vite", "typescript"]
-published: false
+published: true
 ---
 
 ## 要約
