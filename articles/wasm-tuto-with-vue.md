@@ -1,10 +1,12 @@
 ---
-title: "Vue + ViteでRustのWebAssemblyチュートリアルを動かしたい"
+title: "RustのWebAssemblyチュートリアルをVue + Viteで動かしたい"
 emoji: "🏁"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["vue", "vite", "rust", "wasm"]
 published: false
 ---
+
+RustのWebAssemblyチュートリアルをVue.jsとViteで動かすときに、wasmの``memory``オブジェクトの取得方法が分からなくて迷ったので、そのやり方について書きます。
 
 RustのWebAssemblyチュートリアルには「とりあえずwebpackを使いなさい（意訳）」と書いてあります。しかし私はViteが使いたかったのです。
 
@@ -12,13 +14,11 @@ RustのWebAssemblyチュートリアルには「とりあえずwebpackを使い�
 
 ## おおもとのチュートリアルはこちら
 
-この記事では以下のチュートリアルの4.4. Implementing Lifeまで（ライフゲームが動くことを確認するところまで）やります。以降は私がまだこなしてないので……。
+この記事では以下のチュートリアルの4.4. Implementing Lifeまで（ライフゲームが動くことを確認するところまで）やります。
 
 https://rustwasm.github.io/docs/book/introduction.html
 
-## Hello, World! まで
 
-元のチュートリアルの4.2. Hello, World!をやっていきます。Rustのコードはチュートリアル通りです。
 
 ### Vue + Viteのプロジェクトを作成する
 
@@ -36,17 +36,9 @@ webpackを使わないので、wasmのビルドには``--target web``の指定�
 wasm-pack build --target web --out-dir www/assets/pkg
 ```
 
-### vueに読み込む
-
-<!-- script setupの中に読み込む -->
-App.vueのコードをこんな感じに書くと無事にalertを呼べます。
-```ts:App.vue
-// App.vueでalertを表示するコードを貼り付ける。
-```
-
 ## Implementing Life まで
 
-続けて4.4 Implementing Lifeのセクションの前半までチュートリアルを進めます。文字でライフゲームを表示するところまでは問題なく作ることができました。
+4.4 Implementing Lifeのセクションの前半までチュートリアルを進めます。文字でライフゲームを表示するところまでは問題なく作ることができました。
 
 <!-- App.vueのコードを貼り付ける -->
 ```ts:App.vue
@@ -75,3 +67,17 @@ App.vueのコードをこんな感じに書くと無事にalertを呼べます�
 
 * RustのWebAssemblyチュートリアルはwebpackを使っているけどVue + Viteでやりたい
 * WebAssemblyの``memory``オブジェクトを取得するには``onMounted``の中で``memory = (await init()).memory``とすれば良さそう！
+
+<!--  -->
+4.4. Implementing Lifeまで完了したコード（App.vue）はこちらです。
+もとのチュートリアルから変更した点について解説します。
+* フロントエンドのプロジェクトはwww/に作成する
+* wasmのビルドコマンドを変える
+* init()の返り値からmemoryオブジェクトを拾う
+* 動かしてみる
+では実際に``npm run dev``して、ブラウザでアクセスしてみます。すると……。
+
+<!-- 動いた画像を貼り付ける -->
+
+動きました！
+
