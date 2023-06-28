@@ -18,6 +18,8 @@ RustのWebAssemblyチュートリアルには「とりあえずwebpackを使い�
 
 https://rustwasm.github.io/docs/book/introduction.html
 
+## Implementing Lifeのコーディング
+
 
 
 ### Vue + Viteのプロジェクトを作成する
@@ -36,18 +38,9 @@ webpackを使わないので、wasmのビルドには``--target web``の指定�
 wasm-pack build --target web --out-dir www/assets/pkg
 ```
 
-## Implementing Life まで
-
-4.4 Implementing Lifeのセクションの前半までチュートリアルを進めます。文字でライフゲームを表示するところまでは問題なく作ることができました。
-
-<!-- App.vueのコードを貼り付ける -->
-```ts:App.vue
-// App.vueでテキスト形式のlife gameを実行するコードを貼り付ける。
-```
-
 ### memoryはどこにあるか
 
-4.4.の後半では``memory``をimportしています。しかし同じように``import { memory } from "./assets/wasm-game-of-life/wasm_game_of_life_bg";``としても動きません。
+4.4. Implementing Lifeのセクションの後半では``memory``をimportしています。しかし同じように``import { memory } from "./assets/wasm-game-of-life/wasm_game_of_life_bg";``としても動きません。
 
 そこで、今までimportしたものの型情報をよく見ると、``init``が何か返しています。これを変数で受け取ってみましょう。``script setup``の中に直接``await``を書くと動かないので、``onMounted``に書きます。
 
