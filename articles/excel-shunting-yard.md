@@ -1,12 +1,12 @@
 ---
-title: "Excelで文字列を計算したい"
+title: "ExcelのLAMBDA関数で数式文字列を計算する"
 emoji: "🚂"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [excel]
-published: false
+topics: [excel, 逆ポーランド記法]
+published: true
 ---
 
-# 文字列を計算するExcel関数を作りました
+# 数式文字列を計算するExcel関数を作りました
 
 `1+2*(3+4)`のような文字列を解釈して計算結果を返す関数を定義する数式を作りました。以下の数式をExcelの「名前の管理」で登録すると使えるようになります。
 
