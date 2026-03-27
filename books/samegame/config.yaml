@@ -1,0 +1,7 @@
+title: "さめがめを作ろう"
+summary: "超初心者向けプログラミングハンズオン資料　HTMLのテンプレートファイルに追記していく形でさめがめ（same game）を作ります。"
+topics: ["vue"]
+published: false
+price: 0
+chapters:
+  - example1
